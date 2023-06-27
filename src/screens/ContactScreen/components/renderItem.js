@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SCREENS} from '../../../constants/ScreenConstant';
 import UserIcon from '../../../assets/icons/UserIcon';
@@ -9,7 +9,7 @@ import PhoneTypeRenderer from './PhoneTypeRenderer';
 const SCREEN_HEIGHT = theme.window.height;
 
 const ContactItem = ({item}) => {
-  const {displayName, phoneNumbers} = item;
+  const {displayName, phoneNumbers, thumbnailPath} = item;
   const navigation = useNavigation();
   const handlePressMessage = () => {
     console.log('Pressed 1');
@@ -29,7 +29,15 @@ const ContactItem = ({item}) => {
       <View style={styles.contactContent}>
         <View style={styles.contactInfo}>
           <View style={styles.leftContainerWrapper}>
-            <UserIcon />
+            {thumbnailPath ? (
+              <Image
+                style={styles.userImageStyle}
+                source={{uri: thumbnailPath}}
+                resizeMode={'contain'}
+              />
+            ) : (
+              <UserIcon />
+            )}
           </View>
           <View style={styles.rightContainer}>
             <Text style={styles.displayName}>{displayName}</Text>
@@ -126,6 +134,7 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  userImageStyle:{height: 50, width: 50, borderRadius: 25}
 };
 
 export default renderItem;

@@ -1,9 +1,11 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect} from 'react';
+import React, {useContext} from 'react';
 import { PermissionsAndroid } from 'react-native';
 import {SCREENS} from '../../constants/ScreenConstant';
+import { ContactContext } from '../../context/ContactContext';
 
 const HomeScreen = ({navigation}) => {
+  const { data, setData } = useContext(ContactContext);
   return (
     <View style={styles.container}>
       <TouchableOpacity

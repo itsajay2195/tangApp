@@ -35,7 +35,7 @@ const ContactScreen = () => {
         Contact.getAll()
           .then(con => {
             // work with contacts
-            // console.log(con);
+            console.log(con[0]);
             setContacts(con.slice(0, 11));
           })
           .catch(e => {
