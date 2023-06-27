@@ -1,9 +1,15 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import { SCREENS } from '../../../constants/ScreenConstant';
+import {SCREENS} from '../../../constants/ScreenConstant';
+import UserIcon from '../../../assets/icons/UserIcon';
+import theme from '../../../styles/theme';
+import PhoneTypeRenderer from './PhoneTypeRenderer';
+
+const SCREEN_HEIGHT = theme.window.height;
 
 const ContactItem = ({item}) => {
+  const {displayName, phoneNumbers} = item;
   const navigation = useNavigation();
   const handlePressMessage = () => {
     console.log('Pressed 1');
@@ -22,30 +28,21 @@ const ContactItem = ({item}) => {
       }}>
       <View style={styles.contactContent}>
         <View style={styles.contactInfo}>
-          {/* <Image
-            source={require('../images/user.png')}
-            style={styles.profilePicture}
-          /> */}
-          <View style={styles.textContainer}>
-            <Text style={styles.displayName}>{item.displayName}</Text>
-            <Text style={styles.phoneNumber}>
-              {item.phoneNumbers[0].number}
-            </Text>
+          <View style={styles.leftContainerWrapper}>
+            <UserIcon />
           </View>
-        </View>
-        <View style={styles.contactActions}>
-          <TouchableOpacity onPress={handlePressMessage}>
-            {/* <Image
-              source={require('../images/message.png')}
-              style={styles.actionIcon}
-            /> */}
-          </TouchableOpacity>
-          <TouchableOpacity onPress={handlePressCall}>
-            {/* <Image
-              source={require('../images/call.png')}
-              style={styles.actionIcon}
-            /> */}
-          </TouchableOpacity>
+          <View style={styles.rightContainer}>
+            <Text style={styles.displayName}>{displayName}</Text>
+            <View style={styles.numberandTypeWraper}>
+              <PhoneTypeRenderer type={phoneNumbers[0].label} />
+              <Text style={styles.phoneNumber}>
+                {phoneNumbers[0].number}
+                {phoneNumbers.length > 1
+                  ? `, ${phoneNumbers.length - 1} more...`
+                  : null}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -63,26 +60,42 @@ export const renderItem = ({item}) => {
 const styles = {
   contactItem: {
     width: '90%',
-    height: 70,
+    height: SCREEN_HEIGHT / 9,
+    padding: 10,
     alignSelf: 'center',
-    borderWidth: 0.5,
-    borderColor: '#fff',
+    borderColor: theme.colors.white,
     borderRadius: 10,
     marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    shadowColor: theme.colors.white,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   contactContent: {
     flexDirection: 'row',
+    flex: 1,
+    alignItems: 'center',
+  },
+  leftContainerWrapper: {
+    flex: 0.2,
+    justifyContent: 'center',
     alignItems: 'center',
   },
   contactInfo: {
     flexDirection: 'row',
+    flex: 1,
     alignItems: 'center',
     padding: 10,
   },
-  textContainer: {
+  rightContainer: {
+    flex: 1,
     marginLeft: 15,
   },
   displayName: {
@@ -91,6 +104,7 @@ const styles = {
   phoneNumber: {
     color: '#fff',
     marginTop: 4,
+    paddingLeft: 10,
   },
   contactActions: {
     flexDirection: 'row',
@@ -106,6 +120,11 @@ const styles = {
     width: 40,
     height: 40,
     marginLeft: 15,
+  },
+  numberandTypeWraper: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 };
 
