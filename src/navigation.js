@@ -6,6 +6,7 @@ import {KeyboardAvoidingView, Platform} from 'react-native';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
 import ContactScreen from './screens/ContactScreen/ContactScreen';
 import ContactDetails from './screens/ContactDetailsScreen/ContactDetails';
+import { SCREENS } from './constants/ScreenConstant';
 const Stack = createNativeStackNavigator();
 
 function RootNavigation() {
@@ -18,19 +19,19 @@ function RootNavigation() {
           style={{flex: 1}}>
           <Stack.Navigator>
             <Stack.Screen
-              name="Home"
+              name={SCREENS.home}
               component={HomeScreen}
               options={{headerShown: false}}
             />
 
             <Stack.Screen
-              name="Contacts"
+              name={SCREENS.contacts}
               component={ContactScreen}
               options={{headerShown: false}}
             />
 
             <Stack.Screen
-              name="ContactDetails"
+              name={SCREENS.contactDetails}
               component={ContactDetails}
               options={{headerShown: false}}
             />
