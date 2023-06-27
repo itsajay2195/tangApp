@@ -1,10 +1,6 @@
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-  NotLoggedInStackNavigator,
-  LoggedInStackNavigator,
-} from './StackContainer';
 import React from 'react';
 import {KeyboardAvoidingView, Platform} from 'react-native';
 import HomeScreen from './screens/HomeScreen/HomeScreen';
