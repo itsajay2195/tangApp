@@ -1,31 +1,29 @@
-import React from 'react';
+import React, {useCallback, useContext} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {SCREENS} from '../../../constants/ScreenConstant';
 import UserIcon from '../../../assets/icons/UserIcon';
 import theme from '../../../styles/theme';
 import PhoneTypeRenderer from './PhoneTypeRenderer';
+import {ContactContext} from '../../../context/ContactContext';
 
 const SCREEN_HEIGHT = theme.window.height;
 
 const ContactItem = ({item}) => {
   const {displayName, phoneNumbers, thumbnailPath} = item;
+  const {setData, setShowAlert} = useContext(ContactContext);
   const navigation = useNavigation();
-  const handlePressMessage = () => {
-    console.log('Pressed 1');
-    // const url = Communications.text(item.phoneNumbers[0].number);
-  };
-
-  const handlePressCall = () => {
-    console.log('Pressed 2');
-  };
+  const onPress = useCallback(() => {
+    setData(item);
+    if (phoneNumbers.length > 1) {
+      setShowAlert(prev => !prev);
+    } else {
+      navigation.navigate(SCREENS.home);
+    }
+  }, [item, navigation, phoneNumbers.length, setData, setShowAlert]);
 
   return (
-    <TouchableOpacity
-      style={styles.contactItem}
-      onPress={() => {
-        navigation.navigate(SCREENS.contactDetails);
-      }}>
+    <TouchableOpacity style={styles.contactItem} onPress={onPress}>
       <View style={styles.contactContent}>
         <View style={styles.contactInfo}>
           <View style={styles.leftContainerWrapper}>

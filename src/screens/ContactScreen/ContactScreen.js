@@ -32,12 +32,10 @@ const ContactScreen = () => {
       message: 'This app would like to view your contacts.',
       buttonPositive: 'Please accept bare mortal',
     }).then(res => {
-      console.log(res);
       if (res === 'granted') {
         Contact.getAll()
           .then(con => {
             // work with contacts
-            console.log(con[0]);
             setContacts(con.slice(0, 11));
           })
           .catch(e => {
@@ -52,7 +50,7 @@ const ContactScreen = () => {
   return (
     <View style={styles.cotainer}>
       {showAlert ? (
-        <Alert message={"Choose a number:"}/>
+        <Alert message={'Choose a number:'} />
       ) : (
         <>
           <FlatList
