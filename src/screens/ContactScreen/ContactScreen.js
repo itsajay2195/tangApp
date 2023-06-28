@@ -5,20 +5,22 @@ import {
   View,
   Image,
   PermissionsAndroid,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Contact from 'react-native-contacts';
 import {useIsFocused} from '@react-navigation/native';
 import theme from '../../styles/theme';
 import renderItem from './components/renderItem';
+import Alert from './components/ContactDetailModal';
+import {ContactContext} from '../../context/ContactContext';
 
 const keyExtractor = (item, index) => {
   return `contact${item.displayName}-${index}`;
 };
 
-
 const ContactScreen = () => {
+  const {showAlert} = useContext(ContactContext);
   const [contacts, setContacts] = useState(null);
   const isFocused = useIsFocused();
   useEffect(() => {
@@ -49,11 +51,17 @@ const ContactScreen = () => {
 
   return (
     <View style={styles.cotainer}>
-      <FlatList
-        data={contacts}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-      />
+      {showAlert ? (
+        <Alert message={"Choose a number:"}/>
+      ) : (
+        <>
+          <FlatList
+            data={contacts}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+          />
+        </>
+      )}
     </View>
   );
 };

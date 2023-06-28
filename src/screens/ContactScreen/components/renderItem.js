@@ -134,7 +134,7 @@ const styles = {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  userImageStyle:{height: 50, width: 50, borderRadius: 25}
+  userImageStyle: {height: 50, width: 50, borderRadius: 25},
 };
 
 export default renderItem;
