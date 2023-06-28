@@ -7,13 +7,14 @@ import {
   PermissionsAndroid,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext, useCallback} from 'react';
 import Contact from 'react-native-contacts';
 import {useIsFocused} from '@react-navigation/native';
 import theme from '../../styles/theme';
 import renderItem from './components/renderItem';
 import Alert from './components/ContactDetailModal';
 import {ContactContext} from '../../context/ContactContext';
+import SearchBar from '../../components/SearchBar';
 
 const keyExtractor = (item, index) => {
   return `contact${item.displayName}-${index}`;
@@ -22,7 +23,28 @@ const keyExtractor = (item, index) => {
 const ContactScreen = () => {
   const {showAlert} = useContext(ContactContext);
   const [contacts, setContacts] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredContacts, setFilteredContacts] = useState(null);
   const isFocused = useIsFocused();
+
+  const handleSearch = useCallback(
+    query => {
+      setSearchQuery(query);
+
+      if (query === '') {
+        setFilteredContacts(null);
+      } else {
+        const filtered = contacts.filter(contact => {
+          return contact.displayName
+            .toLowerCase()
+            .includes(query.toLowerCase());
+        });
+        setFilteredContacts(filtered);
+      }
+    },
+    [contacts],
+  );
+
   useEffect(() => {
     getPermission();
   }, [isFocused]);
@@ -53,8 +75,14 @@ const ContactScreen = () => {
         <Alert message={'Choose a number:'} />
       ) : (
         <>
+          <SearchBar
+            placeholder={'search here'}
+            textValue={searchQuery}
+            onChangeText={handleSearch}
+          />
           <FlatList
-            data={contacts}
+            // data={contacts}
+            data={filteredContacts !== null ? filteredContacts : contacts}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
           />
