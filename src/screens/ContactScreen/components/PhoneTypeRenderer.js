@@ -1,4 +1,3 @@
-import {StyleSheet} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -35,5 +34,3 @@ const PhoneTypeRenderer = ({type, size}) => {
 };
 
 export default PhoneTypeRenderer;
-
-const styles = StyleSheet.create({});

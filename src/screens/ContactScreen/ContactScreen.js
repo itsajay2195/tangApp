@@ -1,24 +1,12 @@
-import {
-  StyleSheet,
-  Text,
-  FlatList,
-  View,
-  Image,
-  PermissionsAndroid,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, FlatList, View, PermissionsAndroid} from 'react-native';
 import React, {useState, useEffect, useContext, useCallback} from 'react';
 import Contact from 'react-native-contacts';
 import {useIsFocused} from '@react-navigation/native';
-import theme from '../../styles/theme';
 import renderItem from './components/renderItem';
-import Alert from './components/ContactDetailModal';
+import Alert from './components/MultipleNumberAlert';
 import {ContactContext} from '../../context/ContactContext';
 import SearchBar from '../../components/SearchBar';
-
-const keyExtractor = (item, index) => {
-  return `contact${item.displayName}-${index}`;
-};
+import {keyExtractor} from './components/renderItem';
 
 const ContactScreen = () => {
   const {showAlert} = useContext(ContactContext);
@@ -45,10 +33,16 @@ const ContactScreen = () => {
     [contacts],
   );
 
+  const resetSearch = useCallback(() => {
+    setSearchQuery('');
+    setFilteredContacts(null);
+  }, []);
+
   useEffect(() => {
     getPermission();
-  }, [isFocused]);
-  const getPermission = () => {
+  }, [getPermission, isFocused]);
+
+  const getPermission = useCallback(() => {
     PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.READ_CONTACTS, {
       title: 'Contacts',
       message: 'This app would like to view your contacts.',
@@ -58,16 +52,14 @@ const ContactScreen = () => {
         Contact.getAll()
           .then(con => {
             // work with contacts
-            setContacts(con.slice(0, 11));
+            setContacts(con);
           })
           .catch(e => {
-            console.log(e);
+            // console.log(e);
           });
-      } else {
-        console.log('oooo');
       }
     });
-  };
+  }, []);
 
   return (
     <View style={styles.cotainer}>
@@ -79,12 +71,17 @@ const ContactScreen = () => {
             placeholder={'search here'}
             textValue={searchQuery}
             onChangeText={handleSearch}
+            resetSearch={resetSearch}
           />
           <FlatList
-            // data={contacts}
             data={filteredContacts !== null ? filteredContacts : contacts}
             renderItem={renderItem}
             keyExtractor={keyExtractor}
+            initialNumToRender={20} //prop tells FlatList how many items to render initially.
+            maxToRenderPerBatch={30} // prop controls how many items are rendered at a time when the user scrolls
+            windowSize={20} //prop controls how many items are rendered around the current scroll position
+            legacyImplementation={true}
+            // getItemLayout={getItemLayout}
           />
         </>
       )}

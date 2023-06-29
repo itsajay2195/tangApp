@@ -9,7 +9,7 @@ import {ContactContext} from '../../../context/ContactContext';
 
 const SCREEN_HEIGHT = theme.window.height;
 
-const ContactItem = ({item}) => {
+export const ContactItem = ({item}) => {
   const {displayName, phoneNumbers, thumbnailPath} = item;
   const {setData, setShowAlert} = useContext(ContactContext);
   const navigation = useNavigation();
@@ -40,9 +40,9 @@ const ContactItem = ({item}) => {
           <View style={styles.rightContainer}>
             <Text style={styles.displayName}>{displayName}</Text>
             <View style={styles.numberandTypeWraper}>
-              <PhoneTypeRenderer type={phoneNumbers[0].label} />
+              <PhoneTypeRenderer type={phoneNumbers[0]?.label} />
               <Text style={styles.phoneNumber}>
-                {phoneNumbers[0].number}
+                {phoneNumbers[0]?.number}
                 {phoneNumbers.length > 1
                   ? `, ${phoneNumbers.length - 1} more...`
                   : null}
@@ -61,6 +61,16 @@ export const keyExtractor = (item, index) => {
 
 export const renderItem = ({item}) => {
   return <ContactItem item={item} />;
+};
+
+export const getItemLayout = (data, index) => {
+  // Calculate the height of the item at the specified index.
+  const height = SCREEN_HEIGHT / 9; // Assuming the height of each item is 1/9th of the screen height.
+
+  return {
+    length: height,
+    offset: height * index,
+  };
 };
 
 const styles = {

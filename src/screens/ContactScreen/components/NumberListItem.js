@@ -1,5 +1,5 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useMemo, useState, useContext, useCallback} from 'react';
+import {Text, TouchableOpacity} from 'react-native';
+import React, {useMemo, useContext, useCallback} from 'react';
 import {ContactContext} from '../../../context/ContactContext';
 import theme from '../../../styles/theme';
 
@@ -36,5 +36,3 @@ export const numberListRenderItem = ({item}) => {
 };
 
 export default NumberListItem;
-
-const styles = StyleSheet.create({});

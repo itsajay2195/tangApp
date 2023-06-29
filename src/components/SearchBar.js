@@ -7,7 +7,7 @@ const SearchBar = ({placeholder, textValue, onChangeText, resetSearch}) => {
   const themedStyles = useMemo(() => {
     return {
       container: {
-        margin:20,
+        margin: 20,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: theme.colors.white,
