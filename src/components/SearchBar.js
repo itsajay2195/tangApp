@@ -43,4 +43,9 @@ const SearchBar = ({placeholder, textValue, onChangeText, resetSearch}) => {
 
 export default SearchBar;
 
-const textInputStyles = {fontSize: 16, padding: 6, width: '80%'};
+const textInputStyles = {
+  fontSize: 16,
+  padding: 6,
+  width: '80%',
+  color: theme.colors.black,
+};

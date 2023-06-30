@@ -79,6 +79,7 @@ const styles = {
     height: SCREEN_HEIGHT / 9,
     padding: 10,
     alignSelf: 'center',
+    backgroundColor: theme.colors.black,
     borderColor: theme.colors.white,
     borderRadius: 10,
     marginTop: 10,
